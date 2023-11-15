@@ -37,7 +37,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ clientID, onSendMessage }) => {
                 value={messageInput}
                 placeholder="Type a message..."
                 onChange={handleInputChange}
-                onKeyPress={handleInputKeyPress} 
+                onKeyDown={handleInputKeyPress} 
             />
             <button onClick={sendMessage}>Send</button>
         </div>

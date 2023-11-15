@@ -78,8 +78,8 @@ func runHub() {
 			}
 
 		case connection := <-unregister:
-			delete(clients, connection)
 			log.Printf("Client %s disconnected", clients[connection].ID)
+			delete(clients, connection)
 		}
 	}
 }
