@@ -8,7 +8,13 @@ const WebSocketFC: React.FC = () => {
     const [clientID, setClientID] = useState<string>('');
 
     useEffect(() => { 
-        const newSocket = new WebSocket("ws://localhost:3000/ws");
+        let socketUrl;
+        if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+          socketUrl = "ws://localhost:3000/ws";
+        } else {
+          socketUrl = `ws://192.168.1.7:3000/ws`;
+        }
+        const newSocket = new WebSocket(socketUrl);        
         setSocket(newSocket);
 
         return () => {
