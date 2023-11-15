@@ -52,6 +52,11 @@ func setupRoutes() {
 			err error
 		)
 
+		register <- c
+		defer func() {
+			unregister <- c
+		}()
+
 		for {
 			if mt, msg, err = c.ReadMessage(); err != nil {
 				log.Println("read: ", err)
