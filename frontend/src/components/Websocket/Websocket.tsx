@@ -5,6 +5,7 @@ import ChatHistory from "../ChatHistory/ChatHistory";
 const WebSocketFC: React.FC = () => {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<string[]>([]);
+    const [clientID, setClientID] = useState<string>('');
 
     useEffect(() => { 
         const newSocket = new WebSocket("ws://localhost:3000/ws");
@@ -44,8 +45,13 @@ const WebSocketFC: React.FC = () => {
 
 
     const handleWebSocketMessage = (event: MessageEvent) => {
-        const newMessage = event.data;
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        const newMessage = JSON.parse(event.data);
+        console.log("ClientID: ", newMessage.sender)
+        if (newMessage.type === 1) {
+            setClientID(newMessage.sender)
+        } else {
+            setMessages((prevMessages) => [...prevMessages, `${newMessage.sender}: ${newMessage.body}`]);
+        }
     };
 
     const sendMessage = (message: string) => {
@@ -57,7 +63,7 @@ const WebSocketFC: React.FC = () => {
     return (
         <>
             <ChatHistory messages={messages}/>
-            <ChatInput onSendMessage={sendMessage}/>
+            <ChatInput clientID={clientID} onSendMessage={sendMessage}/>
         </>
     )
 }

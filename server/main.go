@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -47,30 +49,36 @@ func setupRoutes() {
 
 	app.Get("/ws", websocket.New(func(c *websocket.Conn) {
 		var (
-			mt  int
-			msg []byte
-			err error
+			messageType int
+			msg         []byte
+			err         error
 		)
 
 		register <- c
 		defer func() {
 			unregister <- c
+			c.Close()
 		}()
 
 		for {
-			if mt, msg, err = c.ReadMessage(); err != nil {
+			if messageType, msg, err = c.ReadMessage(); err != nil {
 				log.Println("read: ", err)
-				break
+				return
 			}
-
-			log.Printf("recv: %s", msg)
-
-			if err = c.WriteMessage(mt, msg); err != nil {
+			log.Printf("recv: Type=%d	Msg=(%s)", messageType, msg)
+			message := Message{}
+			message.Type = 2
+			err := json.Unmarshal(msg, &message)
+			if err != nil {
+				fmt.Println("Error unmarshalling JSON:", err)
+				return
+			}
+			broadcast <- message
+			if err = c.WriteJSON(message); err != nil {
 				log.Println("write: ", err)
-				break
+				return
 			}
 		}
-
 	}))
 
 	app.Get("/", func(c *fiber.Ctx) error {

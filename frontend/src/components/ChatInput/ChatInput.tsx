@@ -1,15 +1,21 @@
 import { useState } from "react";
 
 interface ChatInputProps {
+    clientID: string
     onSendMessage: (message: string) => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ clientID, onSendMessage }) => {
     const [messageInput, setMessageInput] = useState<string>('');
 
     const sendMessage = () => {
         if (messageInput.trim() !== '') {
-            onSendMessage(messageInput);
+            onSendMessage(
+                JSON.stringify({
+                    sender: clientID,
+                    body: messageInput
+                })
+            )
             setMessageInput('');
         }
     };
