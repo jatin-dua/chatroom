@@ -2,11 +2,32 @@ package main
 
 import (
 	"log"
+	"math/rand"
+	"time"
 
+	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
-    "github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
+
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+func main() {
+	go runHub()
+	setupRoutes()
+}
+
+func generateRandomID(length int) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
+}
 
 func setupRoutes() {
 	app := fiber.New()
@@ -25,10 +46,8 @@ func setupRoutes() {
 	})
 
 	app.Get("/ws", websocket.New(func(c *websocket.Conn) {
-		// c.Locals is added to the *websocket.Conn
-	
 		var (
-			mt int
+			mt  int
 			msg []byte
 			err error
 		)
@@ -54,8 +73,4 @@ func setupRoutes() {
 	})
 
 	log.Fatal(app.Listen(":3000"))
-}
-
-func main() {
-	setupRoutes()
 }
