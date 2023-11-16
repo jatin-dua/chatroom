@@ -1,6 +1,7 @@
 import './App.css'
 import { useEffect, useState } from "react"
-import ChatInput from "./components/ChatInput";
+import Button from './components/Button';
+import Input from './components/Input';
 import ChatHistory from "./components/ChatHistory";
 import Message from "types";
 
@@ -8,6 +9,7 @@ function App() {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [clientID, setClientID] = useState<string>('');
+    const [inputData, setInputData] = useState<string>('');
 
     useEffect(() => { 
         let socketUrl;
@@ -73,10 +75,34 @@ function App() {
         }
     };
 
+    const handleSendMessage = () => {
+      if (inputData.trim() !== '') {
+          sendMessage(
+              JSON.stringify({
+                  sender: clientID,
+                  body: inputData
+              })
+          )
+          setInputData('');
+      }
+  };
+
+
+  const handleInputChange = (value: string) => {
+        setInputData(value);
+  };
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+          handleSendMessage();
+      }
+  };
+
     return (
         <>
             <ChatHistory messages={messages}/>
-            <ChatInput clientID={clientID} onSendMessage={sendMessage}/>
+            <Input value={inputData} onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+            <Button onClick={handleSendMessage} text="Send" />
         </>
     )
 }
