@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import ChatInput from "../ChatInput/ChatInput";
-import ChatHistory from "../ChatHistory/ChatHistory";
-import Message from "../../types";
+import ChatInput from "./ChatInput";
+import ChatHistory from "./ChatHistory";
+import Message from "types";
 
 const WebSocketFC: React.FC = () => {
     const [socket, setSocket] = useState<WebSocket | null>(null);

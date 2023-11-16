@@ -1,5 +1,5 @@
 import './App.css'
-import WebSocketFC from './components/Websocket/Websocket'
+import WebSocketFC from './components/Websocket'
 
 function App() {
 
