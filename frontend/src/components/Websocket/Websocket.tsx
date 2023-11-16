@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import ChatInput from "../ChatInput/ChatInput";
 import ChatHistory from "../ChatHistory/ChatHistory";
+import Message from "../../types";
 
 const WebSocketFC: React.FC = () => {
     const [socket, setSocket] = useState<WebSocket | null>(null);
-    const [messages, setMessages] = useState<string[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [clientID, setClientID] = useState<string>('');
 
     useEffect(() => { 
@@ -51,12 +52,17 @@ const WebSocketFC: React.FC = () => {
 
 
     const handleWebSocketMessage = (event: MessageEvent) => {
-        const newMessage = JSON.parse(event.data);
+        const newMessage: Message = JSON.parse(event.data);
         console.log("ClientID: ", newMessage.sender)
         if (newMessage.type === 1) {
             setClientID(newMessage.sender)
         } else {
-            setMessages((prevMessages) => [...prevMessages, `${newMessage.sender}: ${newMessage.body}`]);
+            setMessages((prevMessages) => [...prevMessages, 
+            {
+                type: newMessage.type,
+                sender: newMessage.sender,
+                body: newMessage.body,
+            }]);
         }
     };
 

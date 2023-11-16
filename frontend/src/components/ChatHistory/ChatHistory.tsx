@@ -1,5 +1,7 @@
+import Message from "../../types";
+
 interface ChatHistoryProps {
-    messages: string[];
+    messages: Message[];
 }
 
 const ChatHistory: React.FC<ChatHistoryProps> = ({ messages }) => {
@@ -8,7 +10,7 @@ const ChatHistory: React.FC<ChatHistoryProps> = ({ messages }) => {
             <h2>Chat History</h2>
             <ul>
                 {messages.map((message, index) => (
-                    <li key={index}> {message} </li>
+                    <li key={index}> {`<user ${message.sender}>    ${message.body}`} </li>
                 ))}
             </ul>
         </div>
