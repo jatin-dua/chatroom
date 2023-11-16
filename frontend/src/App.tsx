@@ -1,13 +1,84 @@
 import './App.css'
-import WebSocketFC from './components/Websocket'
+import { useEffect, useState } from "react"
+import ChatInput from "./components/ChatInput";
+import ChatHistory from "./components/ChatHistory";
+import Message from "types";
 
 function App() {
+    const [socket, setSocket] = useState<WebSocket | null>(null);
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [clientID, setClientID] = useState<string>('');
 
-  return (
-    <>
-      <WebSocketFC />
-    </>
-  )
+    useEffect(() => { 
+        let socketUrl;
+        if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+          socketUrl = "ws://localhost:3000/ws";
+        } else {
+          socketUrl = `ws://192.168.1.7:3000/ws`;
+        }
+        const newSocket = new WebSocket(socketUrl);        
+        setSocket(newSocket);
+
+        return () => {
+            newSocket.close();
+        };
+    }, []);
+
+    useEffect(() => {
+        if (socket) {
+            socket.addEventListener('message', handleWebSocketMessage);
+
+            socket.addEventListener('open', () => {
+                console.log('WebSocket connection successful');
+            });
+
+            socket.addEventListener('close', () => {
+                console.log('WebSocket connection closed');
+            });
+
+            socket.addEventListener('error', (error) => {
+                console.error('WebSocket error: ', error);
+            });
+        }
+
+        return () => {
+            if (socket) {
+                socket.removeEventListener('message', handleWebSocketMessage);
+                socket.removeEventListener('open', () => {});
+                socket.removeEventListener('close', () => {});
+                socket.removeEventListener('error', () => {});
+            }
+        }
+    }, [socket]);
+
+
+    const handleWebSocketMessage = (event: MessageEvent) => {
+        const newMessage: Message = JSON.parse(event.data);
+        console.log("ClientID: ", newMessage.sender)
+        if (newMessage.type === 1) {
+            setClientID(newMessage.sender)
+        } else {
+            setMessages((prevMessages) => [...prevMessages, 
+            {
+                type: newMessage.type,
+                sender: newMessage.sender,
+                body: newMessage.body,
+            }]);
+        }
+    };
+
+    const sendMessage = (message: string) => {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(message);
+        }
+    };
+
+    return (
+        <>
+            <ChatHistory messages={messages}/>
+            <ChatInput clientID={clientID} onSendMessage={sendMessage}/>
+        </>
+    )
 }
 
 export default App;
