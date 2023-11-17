@@ -12,12 +12,7 @@ function App() {
     const [inputData, setInputData] = useState<string>('');
 
     useEffect(() => { 
-        let socketUrl;
-        if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-          socketUrl = "ws://localhost:3000/ws";
-        } else {
-          socketUrl = `ws://192.168.1.7:3000/ws`;
-        }
+        let socketUrl = "ws://" + window.location.hostname + ":3000/ws";
         const newSocket = new WebSocket(socketUrl);        
         setSocket(newSocket);
 
