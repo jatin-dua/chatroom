@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import Button from './components/Button';
 import Input from './components/Input';
 import ChatHistory from "./components/ChatHistory";
+import Sidebar from './components/Sidebar';
 import Message from "types";
 
 function App() {
@@ -96,9 +97,10 @@ function App() {
 
     return (
         <div className="grow">
-            <ChatHistory messages={messages}/>
-            <Input value={inputData} onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} />
-            <Button onClick={handleSendMessage} text="Send" />
+            <Sidebar />
+            {/* <ChatHistory messages={messages}/> */}
+            {/* <Input value={inputData} onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} /> */}
+            {/* <Button onClick={handleSendMessage} text="Send" /> */}
         </div>
     )
 }
