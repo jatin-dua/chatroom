@@ -1,4 +1,4 @@
-import './App.css'
+import './index.css'
 import { useEffect, useState } from "react"
 import Button from './components/Button';
 import Input from './components/Input';
@@ -95,11 +95,11 @@ function App() {
   };
 
     return (
-        <>
+        <div className="grow">
             <ChatHistory messages={messages}/>
             <Input value={inputData} onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} />
             <Button onClick={handleSendMessage} text="Send" />
-        </>
+        </div>
     )
 }
 
