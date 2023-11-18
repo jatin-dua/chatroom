@@ -103,8 +103,8 @@ function App() {
   }
 
     return (
-        <div className="grow">
-            <Sidebar handleSubmitName={handleSubmitName}/>
+        <div className="flex flex-col grow">
+            <Sidebar onSubmitName={handleSubmitName}/>
             {/* <ChatHistory messages={messages}/> */}
             {/* <Input value={inputData} onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} /> */}
             {/* <Button onClick={handleSendMessage} text="Send" /> */}
