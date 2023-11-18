@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"sync"
+	"sync/atomic"
 
 	"github.com/gofiber/contrib/websocket"
 )
@@ -14,16 +15,18 @@ type client struct {
 }
 
 type Message struct {
+	ID     int64  `json:"id"`
 	Type   int    `json:"type"`
 	Sender string `json:"sender"`
 	Body   string `json:"body"`
 }
 
 var (
-	clients    = make(map[*websocket.Conn]*client)
-	register   = make(chan *websocket.Conn)
-	broadcast  = make(chan Message)
-	unregister = make(chan *websocket.Conn)
+	clients          = make(map[*websocket.Conn]*client)
+	register         = make(chan *websocket.Conn)
+	broadcast        = make(chan Message)
+	unregister       = make(chan *websocket.Conn)
+	messageID  int64 = 0
 )
 
 func runHub() {
@@ -55,6 +58,8 @@ func runHub() {
 			log.Printf("Client %s connected", clients[connection].ID)
 
 		case message := <-broadcast:
+			atomic.AddInt64(&messageID, 1)
+			message.ID = atomic.LoadInt64(&messageID)
 			log.Printf("message received: %+v\n", message)
 			for connection, c := range clients {
 				if c.ID == message.Sender {

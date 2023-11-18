@@ -57,6 +57,7 @@ function App() {
         } else {
             setMessages((prevMessages) => [...prevMessages, 
             {
+                id: newMessage.id,
                 type: newMessage.type,
                 sender: newMessage.sender,
                 body: newMessage.body,
