@@ -14,13 +14,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
     onClick
 }, ref) => (
     <button type={type} className={twMerge(`
-        w-full
+        w-1/2
         rounded-full
         bg-amber-500
         border
         border-transparent
-        px-3
-        py-3
+        px-1
+        py-2
         disabled:cursor-not-allowed
         disabled:opacity-50
         text-black

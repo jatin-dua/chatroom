@@ -17,7 +17,7 @@ const Box: React.FC<BoxProps> = ({
             w-full
         `, className
         )}>
-            Hello
+            {children}
         </div>
     )
 }

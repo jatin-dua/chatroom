@@ -1,12 +1,15 @@
 import Box from "./Box";
+import NameInput from "./NameInput";
+import SidebarItem from "./SIdebarItem";
 
 interface SidebarProps {
     // children: React.ReactNode;
+    handleSubmitName: (name: string) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = (
     {
-        // children
+        handleSubmitName
     }
 ) => {
     return (
@@ -29,7 +32,12 @@ const Sidebar: React.FC<SidebarProps> = (
                         gap-y-4
                         px-5
                         py-4
-                    "></div>
+                        justify-center items-center
+                    ">
+                        <SidebarItem className="h-1/5">
+                            <NameInput handleSubmitName={handleSubmitName}/>
+                        </SidebarItem>
+                    </div>
                 </Box>
             </div>
         </div>

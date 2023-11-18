@@ -50,6 +50,8 @@ function App() {
     }, [socket]);
 
 
+    let userName: string = "";
+
     const handleWebSocketMessage = (event: MessageEvent) => {
         const newMessage: Message = JSON.parse(event.data);
         console.log("ClientID: ", newMessage.sender)
@@ -95,9 +97,14 @@ function App() {
       }
   };
 
+  const handleSubmitName = (name: string) => {
+    userName = name;
+    console.log(userName);
+  }
+
     return (
         <div className="grow">
-            <Sidebar />
+            <Sidebar handleSubmitName={handleSubmitName}/>
             {/* <ChatHistory messages={messages}/> */}
             {/* <Input value={inputData} onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} /> */}
             {/* <Button onClick={handleSendMessage} text="Send" /> */}
