@@ -15,10 +15,11 @@ type client struct {
 }
 
 type Message struct {
-	ID     int64  `json:"id"`
-	Type   int    `json:"type"`
-	Sender string `json:"sender"`
-	Body   string `json:"body"`
+	ID       int64  `json:"id"`
+	Type     int    `json:"type"`
+	SenderID string `json:"senderID"`
+	Sender   string `json:"sender"`
+	Body     string `json:"body"`
 }
 
 var (
@@ -43,8 +44,8 @@ func runHub() {
 					return
 				}
 				message := Message{
-					Type:   1,
-					Sender: c.ID,
+					Type:     1,
+					SenderID: c.ID,
 				}
 				if err := connection.WriteJSON(message); err != nil {
 					c.isClosing = true
@@ -62,7 +63,7 @@ func runHub() {
 			message.ID = atomic.LoadInt64(&messageID)
 			log.Printf("message received: %+v\n", message)
 			for connection, c := range clients {
-				if c.ID == message.Sender {
+				if c.ID == message.SenderID {
 					continue
 				}
 				go func(connection *websocket.Conn, c *client) {

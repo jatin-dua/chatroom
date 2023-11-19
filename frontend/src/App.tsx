@@ -11,6 +11,7 @@ function App() {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [clientID, setClientID] = useState<string>('');
+    const [name, setName] = useState<string>('');
     const [inputData, setInputData] = useState<string>('');
 
     useEffect(() => { 
@@ -50,19 +51,17 @@ function App() {
         }
     }, [socket]);
 
-
-    let userName: string = "";
-
     const handleWebSocketMessage = (event: MessageEvent) => {
         const newMessage: Message = JSON.parse(event.data);
-        console.log("ClientID: ", newMessage.sender)
+        console.log("ClientID: ", newMessage.senderID)
         if (newMessage.type === 1) {
-            setClientID(newMessage.sender)
+            setClientID(newMessage.senderID)
         } else {
             setMessages((prevMessages) => [...prevMessages, 
             {
                 id: newMessage.id,
                 type: newMessage.type,
+                senderID: newMessage.senderID,
                 sender: newMessage.sender,
                 body: newMessage.body,
             }]);
@@ -79,7 +78,8 @@ function App() {
       if (inputData.trim() !== '') {
           sendMessage(
               JSON.stringify({
-                  sender: clientID,
+                  senderID: clientID,
+                  sender: name,
                   body: inputData
               })
           )
@@ -99,8 +99,7 @@ function App() {
   };
 
   const handleSubmitName = (name: string) => {
-    userName = name;
-    console.log(userName);
+    setName(name);
   }
 
     return (
