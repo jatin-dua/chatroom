@@ -1,9 +1,10 @@
 import './index.css'
 import { useEffect, useState } from "react"
-import Button from './components/Button';
 import Input from './components/Input';
 import ChatHistory from "./components/ChatHistory";
 import Sidebar from './components/Sidebar';
+import NameInput from './components/NameInput';
+import Chat from './components/Chat';
 import Message from "types";
 
 function App() {
@@ -103,11 +104,14 @@ function App() {
   }
 
     return (
-        <div className="flex flex-col grow">
-            <Sidebar onSubmitName={handleSubmitName}/>
-            {/* <ChatHistory messages={messages}/> */}
-            {/* <Input value={inputData} onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} /> */}
-            {/* <Button onClick={handleSendMessage} text="Send" /> */}
+        <div className="flex grow max-h-screen">
+            <Sidebar className="overflow-y-hidden">
+                <NameInput onSubmitName={handleSubmitName}/>
+            </Sidebar>
+            <Chat className="mx-2 relative overflow-x-hidden">
+                <ChatHistory messages={messages} className=""/>
+                <Input value={inputData} placeholder="Type a message..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} className="fixed bottom-2 w-9/12"/>
+            </Chat>
         </div>
     )
 }
