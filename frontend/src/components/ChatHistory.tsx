@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 import Message from "types";
 
@@ -8,9 +9,27 @@ interface ChatHistoryProps {
 }
 
 const ChatHistory: React.FC<ChatHistoryProps> = ({ messages, userID, className }) => {
+    const logRef = useRef(null);
+    useEffect(() => {
+        // Scroll to the bottom when logItems change
+        scrollToBottom();
+    }, [messages]);
+    
+    const scrollToBottom = () => {
+        // Use current to access the DOM element
+        const logElement = logRef.current;
+        // Scroll to the bottom
+        logElement.scrollTop = logElement.scrollHeight - logElement.clientHeight;
+
+        // console.log("scrollTop: ", logElement.scrollTop);
+        // console.log("scrollHeight: ", logElement.scrollHeight);
+        // console.log("clientHeight: ", logElement.clientHeight);
+        // console.log("------- ");
+    };
+
     return (
         <div className={twMerge(`h-5/6`, className)}>
-            <ul className="h-full overflow-auto mb-8">
+            <ul ref={logRef} className="h-full overflow-auto mb-8">
                 {messages.map((message) => (
                     <>
                     <li key={message.id} className="flex items-center gap-4 p-3 bg-neutral-900 rounded-3xl w-full">
