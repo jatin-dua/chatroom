@@ -10,7 +10,7 @@ import Message from "types";
 function App() {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
-    const [clientID, setClientID] = useState<string>('');
+    const [userID, setUserID] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [inputData, setInputData] = useState<string>('');
 
@@ -53,9 +53,9 @@ function App() {
 
     const handleWebSocketMessage = (event: MessageEvent) => {
         const newMessage: Message = JSON.parse(event.data);
-        console.log("ClientID: ", newMessage.senderID)
+        console.log("userID: ", newMessage.senderID)
         if (newMessage.type === 1) {
-            setClientID(newMessage.senderID)
+            setUserID(newMessage.senderID)
         } else {
             setMessages((prevMessages) => [...prevMessages, 
             {
@@ -78,7 +78,7 @@ function App() {
       if (inputData.trim() !== '') {
           sendMessage(
               JSON.stringify({
-                  senderID: clientID,
+                  senderID: userID,
                   sender: name,
                   body: inputData
               })
@@ -105,14 +105,14 @@ function App() {
     return (
         <div className="flex grow max-h-screen">
             <Sidebar className="overflow-y-hidden">
-                <NameInput onSubmitName={handleSubmitName}/>
+                { name === '' && <NameInput onSubmitName={handleSubmitName} /> }
             </Sidebar>
             <Chat className="mx-2 relative overflow-x-hidden">
-                <ChatHistory messages={messages} className=""/>
+                <ChatHistory messages={messages} userID={userID} className=""/>
                 { name === '' ? 
-                    <Input value={inputData} placeholder="Set a Username to chat..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} disabled={true} className="fixed bottom-0 w-9/12 h-12 ml-2"/>
+                    <Input value={inputData} placeholder="Set a Username to chat..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} disabled={true} className="fixed bottom-1 w-9/12 h-12 ml-2"/>
                     :
-                    <Input value={inputData} placeholder="Type a message..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} className="fixed bottom-0 w-9/12 h-12 ml-2"/>
+                    <Input value={inputData} placeholder="Type a message..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} className="fixed bottom-1 w-9/12 h-12 ml-2"/>
                 }
             </Chat>
         </div>
