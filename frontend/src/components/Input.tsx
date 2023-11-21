@@ -5,10 +5,11 @@ interface InputProps {
     placeholder: string;
     onInputChange: (value: string) => void;
     onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+    disabled?: boolean;
     className?: string;
 }
 
-const Input: React.FC<InputProps> = ({ value, placeholder, onInputChange, onKeyDown, className}) => {
+const Input: React.FC<InputProps> = ({ value, placeholder, onInputChange, onKeyDown, disabled, className}) => {
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         onInputChange(event.target.value);
@@ -28,6 +29,7 @@ const Input: React.FC<InputProps> = ({ value, placeholder, onInputChange, onKeyD
                 placeholder={placeholder}
                 onChange={handleInputChange}
                 onKeyDown={onKeyDown} 
+                disabled={disabled}
             />
         </>
     )

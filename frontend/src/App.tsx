@@ -109,7 +109,11 @@ function App() {
             </Sidebar>
             <Chat className="mx-2 relative overflow-x-hidden">
                 <ChatHistory messages={messages} className=""/>
-                <Input value={inputData} placeholder="Type a message..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} className="fixed bottom-2 w-9/12"/>
+                { name === '' ? 
+                    <Input value={inputData} placeholder="Set a Username to chat..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} disabled={true} className="fixed bottom-0 w-9/12 h-12 ml-2"/>
+                    :
+                    <Input value={inputData} placeholder="Type a message..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} className="fixed bottom-0 w-9/12 h-12 ml-2"/>
+                }
             </Chat>
         </div>
     )
