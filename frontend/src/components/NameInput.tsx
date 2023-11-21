@@ -21,7 +21,7 @@ const NameInput: React.FC<NameInputProps> = ({ onSubmitName }) => {
 
     return (
         <div className="flex flex-col items-center justify-center space-y-2 h-1/4">
-            <Input value={inputData} placeholder="Username" onInputChange={setInputData} onKeyDown={handleInputKeyDown} className="text-center"/>
+            <Input value={inputData} placeholder="Username" onInputChange={setInputData} onKeyDown={handleInputKeyDown} className="text-center font-bold"/>
             <Button onClick={handleClick} text="Submit"/>
         </div>
     )

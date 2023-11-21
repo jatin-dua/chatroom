@@ -15,15 +15,9 @@ const Input: React.FC<InputProps> = ({ value, placeholder, onInputChange, onKeyD
         onInputChange(event.target.value);
     }
 
-    // const handleInputKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    //     if (event.key === 'Enter') {
-    //         sendMessage();
-    //     }
-    // };
-
     return (
         <>
-            <input className= {twMerge(`text-white font-bold rounded-lg px-4 py-2 outline-none`, className)}
+            <input className= {twMerge(`text-white rounded-lg px-4 py-2 outline-none`, className)}
                 type="text"
                 value={value}
                 placeholder={placeholder}

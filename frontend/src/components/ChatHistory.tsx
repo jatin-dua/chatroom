@@ -9,9 +9,8 @@ interface ChatHistoryProps {
 
 const ChatHistory: React.FC<ChatHistoryProps> = ({ messages, userID, className }) => {
     return (
-        <div className={twMerge(``, className)}>
-            <h2 className="text-white text-3xl font-semibold mb-8">Chat History</h2>
-            <ul className="overflow-auto mb-8">
+        <div className={twMerge(`h-5/6`, className)}>
+            <ul className="h-full overflow-auto mb-8">
                 {messages.map((message) => (
                     <>
                     <li key={message.id} className="flex items-center gap-4 p-3 bg-neutral-900 rounded-3xl w-full">

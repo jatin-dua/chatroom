@@ -5,6 +5,7 @@ import ChatHistory from "./components/ChatHistory";
 import Sidebar from './components/Sidebar';
 import NameInput from './components/NameInput';
 import Chat from './components/Chat';
+import Panel from './components/Panel';
 import Message from "types";
 
 function App() {
@@ -108,12 +109,9 @@ function App() {
                 { name === '' && <NameInput onSubmitName={handleSubmitName} /> }
             </Sidebar>
             <Chat className="mx-2 relative overflow-x-hidden">
+            <Panel className="item-center justify-center sticky top-0"><h2 className="text-white text-3xl font-semibold">Messages</h2></Panel>
                 <ChatHistory messages={messages} userID={userID} className=""/>
-                { name === '' ? 
-                    <Input value={inputData} placeholder="Set a Username to chat..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} disabled={true} className="fixed bottom-1 w-9/12 h-12 ml-2"/>
-                    :
-                    <Input value={inputData} placeholder="Type a message..." onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} className="fixed bottom-1 w-9/12 h-12 ml-2"/>
-                }
+                <Panel className="sticky bottom-1 w-full"><Input value={inputData} placeholder={ name === '' ?  "Set a Username to send messages" : "Type a message"} onInputChange={handleInputChange} onKeyDown={handleInputKeyDown} disabled={ name === '' } className="w-10/12 h-12 items-center ml-4"/></Panel>
             </Chat>
         </div>
     )
